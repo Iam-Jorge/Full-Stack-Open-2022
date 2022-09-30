@@ -26,10 +26,6 @@ let persons = [
   }
 ]
 
-app.get("/", (request, response) => {
-  response.send("<h1>Hello World!</h1>");
-});
-
 app.get("/api/persons", (request, response) => {
   response.json(persons);
 });
@@ -50,7 +46,7 @@ app.get('/api/persons/:id', (request, response) => {
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  notes = persons.filter(person => person.id !== id)
+  persons = persons.filter(person => person.id !== id)
 
   response.status(204).end()
 })
@@ -65,10 +61,11 @@ const generateId = () => {
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
+  const { name, number } = request.body;
 
-  if (!body.content) {
+  if (!body.name || !body.number) {
     return response.status(400).json({ 
-      error: 'Content missing' 
+      error: 'Name or number missing' 
     })
   }
 
